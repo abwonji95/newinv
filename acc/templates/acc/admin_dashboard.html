@@ -1,0 +1,364 @@
+{% extends 'acc/main.html' %}
+
+
+
+
+
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+
+<style>
+  
+      
+      #wrapper {
+        padding-left: 0;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+      
+      #wrapper.toggled {
+        padding-left: 250px;
+      }
+      
+      #sidebar-wrapper {
+        z-index: 1000;
+        position: absolute;
+        left: 250px;
+        width: 0;
+        height: 100%;
+        margin-left: -250px;
+        overflow-y: auto;
+        background: rgb(27, 27, 27);
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+      
+      #wrapper.toggled #sidebar-wrapper {
+        width: 300px;
+      }
+      
+      #page-content-wrapper {
+        width: 100%;
+        position: absolute;
+        padding: 15px;
+      }
+      
+      #wrapper.toggled #page-content-wrapper {
+        position: absolute;
+        margin-right: -250px;
+      }
+      
+      
+      /* Sidebar Styles */
+      
+      .sidebar-nav {
+        position: absolute;
+        top: 0;
+        width: 250px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      
+      .sidebar-nav li {
+        text-indent: 20px;
+        line-height: 40px;
+      }
+      
+      .sidebar-nav li a {
+        display: block;
+        text-decoration: none;
+        color: #999999;
+      }
+      
+      .sidebar-nav li a:hover {
+        text-decoration: none;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.2);
+      }
+      
+      .sidebar-nav li a:active, .sidebar-nav li a:focus {
+        text-decoration: none;
+      }
+      
+      .sidebar-nav>.sidebar-brand {
+        height: 65px;
+        font-size: 18px;
+        line-height: 60px;
+      }
+      
+      .sidebar-nav>.sidebar-brand a {
+        color: #999999;
+      }
+      
+      .sidebar-nav>.sidebar-brand a:hover {
+        color: #fff;
+        background: none;
+      }
+      
+      @media(min-width:768px) {
+        #wrapper {
+          padding-left: 0;
+        }
+        #wrapper.toggled {
+          padding-left: 250px;
+        }
+        #sidebar-wrapper {
+          width: 0;
+        }
+        #wrapper.toggled #sidebar-wrapper {
+          width: 250px;
+        }
+        #page-content-wrapper {
+          padding: 20px;
+          position: relative;
+        }
+        #wrapper.toggled #page-content-wrapper {
+          position: relative;
+          margin-right: 0;
+        }
+      }
+
+.floatLeft { width: 40%; float: left; }
+.floatRight {width: 40%; float: right; }
+.container { overflow: hidden; }
+
+.card-counter{
+  box-shadow: 2px 2px 10px #DADADA;
+  margin: 5px;
+  padding: 20px 10px;
+  background-color: #fff;
+  height: 200px;
+  border-radius: 5px;
+  transition: .3s linear all;
+}
+
+.card-counter:hover{
+  box-shadow: 4px 4px 20px #DADADA;
+  transition: .3s linear all;
+}
+
+.card-counter.primary{
+  background-color: #007bff;
+  color: #FFF;
+}
+
+.card-counter.danger{
+  background-color: #ef5350;
+  color: #FFF;
+}  
+
+.card-counter.success{
+  background-color: #66bb6a;
+  color: #FFF;
+}  
+
+.card-counter.info{
+  background-color: #26c6da;
+  color: #FFF;
+}  
+
+.card-counter i{
+  font-size: 5em;
+  opacity: 0.2;
+}
+
+.card-counter .count-numbers{
+  position: absolute;
+  right: 35px;
+  top: 20px;
+  font-size: 32px;
+  display: block;
+}
+
+.card-counter .count-name{
+  position: absolute;
+  right: 35px;
+  top: 65px;
+  font-style: italic;
+  text-transform: capitalize;
+  opacity: 0.5;
+  display: block;
+  font-size: 18px;
+}
+
+
+
+
+</style>
+    <div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="{% url 'admin_dashboard'%}">
+                        My Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'reports'%}">Reports</a>
+                </li>
+                <li>
+                    <a href="{% url 'stock'%}">Stock</a>
+                </li>
+                <li>
+                    <a href="{% url 'purchases'%}">Purchases</a>
+                </li>
+                <li>
+                    <a href="{% url 'requests'%}">Requests</a>
+                </li>
+                <li>
+                    <a href="{% url 'returns'%}">Returns</a>
+                </li>
+                <li>
+                    <a href="{% url 'accounts'%}">Accounts</a>
+                </li>
+                <li>
+                    <a href="{% url 'vendors'%}">Vendors</a>
+                </li>
+                <li>
+                    <a href="{% url 'main'%}">Sign out</a>
+                </li>
+            </ul>
+           
+        </div>
+        <div class='lock'>
+          <div class="container">
+              <div class="row">
+              <div class="col-md-3">
+                <div class="card-counter primary">
+                  <i class="fa fa-code-fork"></i>
+                  <span class="count-numbers"></span>
+                  <span class="count-name">Vendors</span>
+                </div>
+              </div>
+          
+              <div class="col-md-3">
+                <div class="card-counter danger">
+                  <i class="fa fa-ticket"></i>
+                  <span class="count-numbers"></span>
+                  <span class="count-name">Total sales</span>
+                </div>
+              </div>
+          
+              <div class="col-md-3">
+                <div class="card-counter success">
+                  <i class="fa fa-database"></i>
+                  <span class="count-numbers"></span>
+                  <span class="count-name">Requests pending</span>
+                </div>
+              </div>
+          
+              <div class="col-md-3">
+                <div class="card-counter info">
+                  <i class="fa fa-users"></i>
+                  <span class="count-numbers"></span>
+                  <span class="count-name">Users</span>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+
+          </div>
+
+<div class='rounded-lg border-8 border-indigo-600 ...'>
+          <table class="table table-dark">
+            <thead><h4>Purchases</h4>
+              <tr>
+                <th scope="col">product</th>
+                <th scope="col">date</th>
+                <th scope="col">po number</th>
+                
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>
+                  {% for i in products %}
+                  <tr>
+                       <td>{{i.name}}</td>
+                  </tr>
+                  {% endfor %}
+                </th>
+               
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+    
+        <div class='rounded-lg border-8 border-indigo-600 ...'>
+          <table class="table table-dark">
+            <thead><h4>Sales</h4>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Po number</th>
+                <th scope="col">Product</th>
+                <th scope="col">Description</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>
+                  {%for i in products%}
+                  <tr>
+                  <td>{{i.name}}</td>
+                  </tr>
+                  {% endfor %}
+                </th>
+               </tr>
+          </tbody>
+          </table>
+        </div>
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+<style>
+
+
+
+
+</style>
+
+
+    
+        
+    <!-- /#wrapper -->
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+  
+
+
+{% endblock %}
+
+
+
+
+
+
+
