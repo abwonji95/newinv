@@ -1,6 +1,6 @@
 # NEWINV
 
-Inventory system with approval and user role management.
+### Inventory system with approval and user role management.
 
 ## Created By 
 [Wallace Abuonji](https://github.com/abwonji95)
